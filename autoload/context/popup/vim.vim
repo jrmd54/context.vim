@@ -9,6 +9,11 @@ function! context#popup#vim#open() abort
 
     call setwinvar(popup, '&wincolor', g:context.highlight_normal)
 
+    " get buffer number of that popup window
+    let bufnr = winbufnr(popup)
+    " set a buffer-local variable
+    call setbufvar(bufnr, 'context_flag', 'SET')
+
     return popup
 endfunction
 
