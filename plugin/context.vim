@@ -46,7 +46,8 @@ endif
 if g:context.add_autocmds
     augroup context.vim
         autocmd!
-        autocmd VimEnter     * ContextActivate
+        " below line: problematic cf called after BufReadPost->ContextDisableWindow in vimrc.. (some sort of race condition)
+        autocmd VimEnter       * call context#activate_on_startup()
         autocmd BufAdd       * call context#update('BufAdd')
         autocmd BufEnter     * call context#update('BufEnter')
         autocmd CursorMoved  * call context#update('CursorMoved')
@@ -66,5 +67,5 @@ endif
 " lazy loading was used
 if v:vim_did_enter
     let g:context.enabled = 0 " plugin was effectively disabled before load
-    ContextActivate
+    call context#activate_on_startup()
 endif

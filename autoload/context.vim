@@ -2,6 +2,18 @@ let s:activated     = 0
 let s:ignore_update = 0
 
 " call this on VimEnter to activate the plugin
+function! context#activate_on_startup() abort
+    call context#activate()
+    " caveat: not working with diffs or when loading multiple files.. => simply never use context if file has > 10k lines
+    " for bufnr in range(0, bufnr('$'))
+    "   if bufexists(bufnr)
+    "     if line('$') >= 10000
+    "         call context#disable(0)
+    "     endif
+    "   endif
+    " endfor
+endfunction
+
 function! context#activate() abort
     " for some reason there seems to be a race when we try to show context of
     " one buffer before another one gets opened in startup
@@ -112,6 +124,7 @@ function! context#update(...) abort
                 \ || (mode() != 'n' && mode() != 't')
                 \ || !context#util#active()
                 \ || bufname("%") =~# '^term://'
+                \ || line('$') >= 10000
         let w:context.needs_update = 0
         " NOTE: we still consider needs_layout even if this buffer is disabled
     endif
