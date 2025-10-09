@@ -125,6 +125,7 @@ function! context#update(...) abort
                 \ || !context#util#active()
                 \ || bufname("%") =~# '^term://'
                 \ || line('$') >= 10000
+                \ || exists('w:far_preview_win')
         let w:context.needs_update = 0
         " NOTE: we still consider needs_layout even if this buffer is disabled
     endif
